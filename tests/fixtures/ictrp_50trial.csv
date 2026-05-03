@@ -1,0 +1,56 @@
+TrialID,Source Register,Conditions,Secondary IDs,Results URL,Date registered,Countries,Primary Sponsor,Recruitment Status
+PACTR2026000000000,PACTR,tuberculosis,NCT04120000,https://pactr.samrc.ac.za/results/X,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000001,PACTR,tuberculosis,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000002,PACTR,tuberculosis,NCT04120002,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000003,PACTR,tuberculosis,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000004,PACTR,tuberculosis,NCT04120004,,2024-01-15,TZA,WHO TDR,Recruiting
+PACTR2026000000005,PACTR,hiv,NCT04120005,,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000006,PACTR,hiv,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000007,PACTR,hiv,NCT04120007,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000008,PACTR,hiv,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000009,PACTR,hiv,NCT04120009,,2024-01-15,TZA,WHO TDR,Recruiting
+PACTR2026000000010,PACTR,sickle cell,NCT04120010,,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000011,PACTR,sickle cell,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000012,PACTR,sickle cell,NCT04120012,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000013,PACTR,sickle cell,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000014,PACTR,sickle cell,NCT04120014,,2024-01-15,TZA,WHO TDR,Recruiting
+PACTR2026000000015,PACTR,schistosomiasis,NCT04120015,,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000016,PACTR,schistosomiasis,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000017,PACTR,schistosomiasis,NCT04120017,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000018,PACTR,schistosomiasis,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000019,PACTR,schistosomiasis,NCT04120019,,2024-01-15,TZA,WHO TDR,Recruiting
+PACTR2026000000020,PACTR,maternal sepsis,NCT04120020,,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000021,PACTR,maternal sepsis,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000022,PACTR,maternal sepsis,NCT04120022,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000023,PACTR,maternal sepsis,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000024,PACTR,maternal sepsis,NCT04120024,,2024-01-15,TZA,WHO TDR,Recruiting
+PACTR2026000000025,PACTR,neonatal sepsis,NCT04120025,https://pactr.samrc.ac.za/results/X,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000026,PACTR,neonatal sepsis,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000027,PACTR,neonatal sepsis,NCT04120027,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000028,PACTR,neonatal sepsis,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000029,PACTR,neonatal sepsis,NCT04120029,,2024-01-15,TZA,WHO TDR,Recruiting
+PACTR2026000000030,PACTR,snakebite,NCT04120030,,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000031,PACTR,snakebite,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000032,PACTR,snakebite,NCT04120032,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000033,PACTR,snakebite,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000034,PACTR,snakebite,NCT04120034,,2024-01-15,TZA,WHO TDR,Recruiting
+PACTR2026000000035,PACTR,soil-transmitted helminths,NCT04120035,,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000036,PACTR,soil-transmitted helminths,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000037,PACTR,soil-transmitted helminths,NCT04120037,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000038,PACTR,soil-transmitted helminths,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000039,PACTR,soil-transmitted helminths,NCT04120039,,2024-01-15,TZA,WHO TDR,Recruiting
+PACTR2026000000040,PACTR,cervical cancer,NCT04120040,,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000041,PACTR,cervical cancer,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000042,PACTR,cervical cancer,NCT04120042,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000043,PACTR,cervical cancer,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000044,PACTR,cervical cancer,NCT04120044,,2024-01-15,TZA,WHO TDR,Recruiting
+PACTR2026000000045,PACTR,cholera,NCT04120045,,2024-01-15,UGA,Makerere University,Recruiting
+PACTR2026000000046,PACTR,cholera,,,2024-01-15,KEN,Kenya MoH,Recruiting
+PACTR2026000000047,PACTR,cholera,NCT04120047,,2024-01-15,NGA,Pfizer,Recruiting
+PACTR2026000000048,PACTR,cholera,,,2024-01-15,ZAF,Gilead,Recruiting
+PACTR2026000000049,PACTR,cholera,NCT04120049,,2024-01-15,TZA,WHO TDR,Recruiting
+ChiCTR-XXX-0000,ChiCTR,diabetes,,,2024-01-15,CHN,Beijing Hospital,Recruiting
+ChiCTR-XXX-0001,ChiCTR,diabetes,,,2024-01-15,CHN,Beijing Hospital,Recruiting
+ChiCTR-XXX-0002,ChiCTR,diabetes,,,2024-01-15,CHN,Beijing Hospital,Recruiting
+ChiCTR-XXX-0003,ChiCTR,diabetes,,,2024-01-15,CHN,Beijing Hospital,Recruiting
+ChiCTR-XXX-0004,ChiCTR,diabetes,,,2024-01-15,CHN,Beijing Hospital,Recruiting
