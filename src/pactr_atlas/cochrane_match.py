@@ -19,6 +19,7 @@ class MatchVerdict:
     method: str
     review_id: Optional[str] = None
     review_ids_all: Optional[tuple[str, ...]] = None
+    ensemble_disagree: bool = False
 
 
 def nct_bridge_match(nct: Optional[str], pairwise70_index: pd.DataFrame) -> MatchVerdict:
@@ -50,3 +51,60 @@ def pactr_id_literal_match(
         in_cochrane=True, method="pactr_id_literal",
         review_id=review_ids[0], review_ids_all=review_ids,
     )
+
+
+def match_trial(
+    *,
+    nct: Optional[str],
+    pactr_id: str,
+    pairwise70_index: pd.DataFrame,
+    cdsr_conn: sqlite3.Connection,
+) -> MatchVerdict:
+    """Ensemble combiner: NCT-bridge primary + PACTR-ID literal sensitivity.
+
+    Algorithm (semantic-locked, not a simple xor):
+      1. Primary (NCT bridge) hits -> authoritative; literal-miss is expected
+         for a lower-recall sensitivity check; ensemble_disagree=False.
+      2. nct is None -> tier0_invisible; primary couldn't run, so the literal
+         becomes the verdict if it hits; ensemble_disagree=False.
+      3. NCT present, primary missed, literal hit -> genuine disagreement;
+         primary verdict (False) wins per spec; ensemble_disagree=True so
+         atlas.csv can surface this as a sensitivity column.
+      4. Both missed -> method="none", no disagreement.
+    """
+    primary = nct_bridge_match(nct, pairwise70_index)
+    secondary = pactr_id_literal_match(pactr_id, cdsr_conn)
+
+    # Case 1: primary (NCT bridge) hits — authoritative, literal-miss is
+    # expected behaviour for a lower-recall sensitivity check.
+    if primary.in_cochrane:
+        return MatchVerdict(
+            in_cochrane=True, method="nct_bridge",
+            review_id=primary.review_id, review_ids_all=primary.review_ids_all,
+            ensemble_disagree=False,
+        )
+
+    # Case 2: tier0_invisible (no NCT) — primary couldn't check.
+    # Literal becomes the verdict when it hits.
+    if not nct:
+        if secondary.in_cochrane:
+            return MatchVerdict(
+                in_cochrane=True, method="pactr_id_literal",
+                review_id=secondary.review_id,
+                review_ids_all=secondary.review_ids_all,
+                ensemble_disagree=False,
+            )
+        return MatchVerdict(in_cochrane=False, method="none", ensemble_disagree=False)
+
+    # Case 3: NCT present, primary missed, literal hit — genuine disagreement.
+    # Primary verdict (False) wins per spec; flag ensemble_disagree=True so
+    # atlas.csv can surface this as a sensitivity column.
+    if secondary.in_cochrane:
+        return MatchVerdict(
+            in_cochrane=False, method="nct_bridge",
+            review_id=None, review_ids_all=None,
+            ensemble_disagree=True,
+        )
+
+    # Case 4: both missed.
+    return MatchVerdict(in_cochrane=False, method="none", ensemble_disagree=False)
