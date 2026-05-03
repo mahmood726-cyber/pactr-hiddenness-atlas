@@ -6,6 +6,7 @@ Validation: Pairwise70-restricted manual audit cohort (Task 11)
 """
 from __future__ import annotations
 
+import sqlite3
 from dataclasses import dataclass
 from typing import Optional
 
@@ -29,5 +30,23 @@ def nct_bridge_match(nct: Optional[str], pairwise70_index: pd.DataFrame) -> Matc
     review_ids = tuple(sorted(set(hits["review_id"].astype(str))))
     return MatchVerdict(
         in_cochrane=True, method="nct_bridge",
+        review_id=review_ids[0], review_ids_all=review_ids,
+    )
+
+
+def pactr_id_literal_match(
+    pactr_id: str, cdsr_conn: sqlite3.Connection
+) -> MatchVerdict:
+    if not pactr_id:
+        return MatchVerdict(in_cochrane=False, method="none")
+    cur = cdsr_conn.execute(
+        "SELECT review_id FROM review_strings WHERE body_text LIKE ? LIMIT 5",
+        (f"%{pactr_id}%",),
+    )
+    review_ids = tuple(sorted({row[0] for row in cur.fetchall()}))
+    if not review_ids:
+        return MatchVerdict(in_cochrane=False, method="none")
+    return MatchVerdict(
+        in_cochrane=True, method="pactr_id_literal",
         review_id=review_ids[0], review_ids_all=review_ids,
     )
