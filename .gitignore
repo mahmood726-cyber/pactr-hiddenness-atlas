@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Local config (paths.toml is gitignored; paths.toml.example is committed)
+paths.toml
+ictrp_path.toml
+
+# Data — raw snapshot is too large + may contain copies of upstream-licensed material
+data/raw/*
+!data/raw/.gitkeep
+data/snapshots/*.csv
+data/snapshots/*.xml
+!data/snapshots/.gitkeep
+!data/snapshots/*_metadata.json
+
+# Local progress / scratch
+PROGRESS.md
+sentinel-findings.md
+STUCK_FAILURES.md
+STUCK_FAILURES.jsonl
+.scratch/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Build artefacts
+build/
+dist/
+*.egg

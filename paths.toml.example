@@ -1,0 +1,28 @@
+# PACTR Hiddenness Atlas — local path configuration
+#
+# Copy this file to `paths.toml` and edit. The real `paths.toml` is
+# gitignored. No source file in `src/`, `tests/`, or `pilots/` may contain
+# a hardcoded `C:/...`, `/home/...`, or `/Users/...` path — every external
+# reference must resolve through this config.
+#
+# Loaded by `src/pactr_atlas/config.py` (to be implemented post-prereg).
+
+[ictrp]
+# Frozen WHO ICTRP weekly export CSV. Pinned by sha256 in
+# data/snapshots/ictrp_metadata.json. Re-fetching is a deliberate
+# preflight step, not a silent fallback.
+snapshot = "C:/Users/user/data/ictrp/ictrp_2026-05-XX.csv"
+
+[pairwise70]
+# Pairwise70 study-reference index — used by cochrane_match.nct_bridge
+# to look up Cochrane reviews citing a given NCT.
+index = "C:/Users/user/data/pairwise70/study_references.parquet"
+
+[cdsr]
+# Cochrane CDSR string index — used by cochrane_match.pactr_id_literal
+# for the sensitivity check on direct PACTR-ID citation.
+string_index = "C:/Users/user/data/cdsr/cdsr_string_index.sqlite"
+
+[europe_pmc]
+# Per-NCT JSON cache directory for publication_match. Created if missing.
+cache_dir = "C:/Users/user/data/europe_pmc_cache"
