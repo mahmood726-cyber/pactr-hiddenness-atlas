@@ -44,6 +44,6 @@ def load_paths(toml_path: Path) -> Paths:
         if dest == "europe_pmc_cache_dir":
             p.mkdir(parents=True, exist_ok=True)
         elif not p.exists():
-            raise ConfigError(f"missing required key [{section}].{key}: {p} not found")
+            raise ConfigError(f"referenced path missing for [{section}].{key}: {p}")
         fields[dest] = p
     return Paths(**fields)
