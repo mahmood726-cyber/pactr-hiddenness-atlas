@@ -1,7 +1,6 @@
 """Shared pytest fixtures and deterministic-seed plumbing."""
 from __future__ import annotations
 
-import os
 import random
 import sys
 from pathlib import Path
@@ -28,10 +27,14 @@ def fixture_path():
 
 
 @pytest.fixture
-def utf8_stdout(capsys):
+def utf8_stdout():
     """Force UTF-8 on stdout per portfolio cp1252 lesson."""
     import io
+    original = sys.stdout
     sys.stdout = io.TextIOWrapper(
         sys.stdout.buffer, encoding="utf-8", errors="replace"
     )
-    yield
+    try:
+        yield
+    finally:
+        sys.stdout = original
