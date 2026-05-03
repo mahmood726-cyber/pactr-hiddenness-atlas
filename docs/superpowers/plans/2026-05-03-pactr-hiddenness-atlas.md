@@ -470,12 +470,9 @@ from typing import Iterable
 import pandas as pd
 
 from pactr_atlas.config import Paths
+from pactr_atlas.conditions_table import CONDITIONS_10
 
-CONDITIONS = (
-    "tuberculosis", "hiv", "sickle cell", "schistosomiasis",
-    "maternal sepsis", "neonatal sepsis", "snakebite",
-    "soil-transmitted helminths", "cervical cancer", "cholera",
-)
+CONDITIONS: tuple[str, ...] = tuple(CONDITIONS_10.keys())
 
 
 class PreflightFailed(RuntimeError):
