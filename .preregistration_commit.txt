@@ -1,0 +1,81 @@
+PACTR Hiddenness Atlas — preregistration anchor manifest
+=========================================================
+
+This file records the integrity anchors of `prereg-v0.0.1`. It is
+the first commit added AFTER the prereg tag. The diff between
+`prereg-v0.0.1` and the commit that introduces this file IS the
+audit trail.
+
+Frozen tag
+----------
+tag         : prereg-v0.0.1
+commit SHA  : c9cd90b3355974254232a4b67ce2920bc39d6e0d
+date        : 2026-05-03
+remote      : https://github.com/mahmood726-cyber/pactr-hiddenness-atlas
+
+OpenTimestamps Bitcoin anchors
+------------------------------
+Bitcoin confirmation is asynchronous (hours-to-day). Each .ots receipt
+is committable immediately and upgrades to a Bitcoin block header
+attestation once a calendar publishes it. Verify with:
+
+    python scripts/stamp_file.py --verify <file>      # (verifier TODO post-prereg)
+    # or any standard ots client once libeay32 is available
+
+File: docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md
+  sha256:    ba420d236188f25fe9194dab31e39f7b88259dcffb6e2b9ccbd3fcecc01a23e9
+  receipt:   docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md.ots
+  calendars: a.pool.opentimestamps.org, b.pool.opentimestamps.org,
+             finney.calendar.eternitywall.com (all 3/3 accepted)
+
+File: e156-submission/protocol.md
+  sha256:    af206c242e22279928531316e64b92c80199bf977d54f633dc2a36ed72fbf68c
+  receipt:   e156-submission/protocol.md.ots
+  calendars: a.pool.opentimestamps.org, b.pool.opentimestamps.org,
+             finney.calendar.eternitywall.com (all 3/3 accepted)
+
+Internet Archive snapshots
+--------------------------
+Tag tree:
+  https://web.archive.org/web/20260503113224/https://github.com/mahmood726-cyber/pactr-hiddenness-atlas/tree/prereg-v0.0.1
+
+Spec file:
+  https://web.archive.org/web/20260503113255/https://github.com/mahmood726-cyber/pactr-hiddenness-atlas/blob/prereg-v0.0.1/docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md
+
+Protocol file:
+  https://web.archive.org/web/20260503113438/https://github.com/mahmood726-cyber/pactr-hiddenness-atlas/blob/prereg-v0.0.1/e156-submission/protocol.md
+
+Provenance
+----------
+- git author    : mahmood789 (legacy alt account; both mahmood789 and
+                  mahmood726-cyber belong to the same person — see
+                  reference_github_accounts.md in user memory)
+- repo owner    : mahmood726-cyber (active account)
+- stamper       : scripts/stamp_file.py (custom calendar HTTP client;
+                  the standard `ots` CLI on Windows + Python 3.13 fails
+                  to load libeay32 via python-bitcoinlib)
+- IA submission : anonymous; HTTP 200 from web.archive.org/save endpoint
+
+Verifier intent
+---------------
+A future commit (post-prereg) will add `scripts/verify_prereg.py` that:
+  1. Re-computes sha256 of the two anchored files and compares to this
+     manifest.
+  2. Loads each .ots receipt and confirms the digest matches.
+  3. Probes the IA snapshot URLs for HTTP 200.
+  4. Confirms the prereg-v0.0.1 tag still resolves to the same commit
+     SHA on origin.
+Any mismatch is a CRITICAL Sentinel BLOCK.
+
+Anti-HARK commitment
+--------------------
+The 10 conditions, the four-gate definitions, the Cochrane-match
+ensemble, the fuzzy-matching rejection, and the three pre-ship
+validation gates are LOCKED at this manifest. Any change after
+`prereg-v0.0.1` requires:
+
+  1. A new tag whose name documents the amendment, e.g.
+     `prereg-v0.1.0-amend-1`.
+  2. An entry in `AMENDMENTS.md` describing what changed and why.
+  3. A new round of OTS stamps + IA snapshots on the amended files.
+  4. Updating this manifest in the same commit as the new tag.

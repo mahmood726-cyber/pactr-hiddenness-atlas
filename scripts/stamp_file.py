@@ -23,7 +23,7 @@ from pathlib import Path
 
 from opentimestamps.core.notary import PendingAttestation
 from opentimestamps.core.op import OpAppend, OpSHA256
-from opentimestamps.core.serialize import BytesSerializationContext, StreamSerializationContext
+from opentimestamps.core.serialize import BytesDeserializationContext, StreamSerializationContext
 from opentimestamps.core.timestamp import DetachedTimestampFile, Timestamp
 
 import urllib.request
@@ -74,7 +74,7 @@ def make_merkle_tip_timestamp(file_digest: bytes) -> Timestamp:
         except Exception as exc:
             print(f"  ! {cal} failed: {exc}", file=sys.stderr)
             continue
-        ctx = BytesSerializationContext(cal_response)
+        ctx = BytesDeserializationContext(cal_response)
         cal_ts = Timestamp.deserialize(ctx, hashed.msg)
         # Replace the empty Timestamp at this branch with the calendar's response
         for op, ts in cal_ts.ops.items():
