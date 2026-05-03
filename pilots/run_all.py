@@ -11,6 +11,7 @@ function-by-function — they are not patched in the integration test.
 """
 from __future__ import annotations
 
+import contextlib
 import sqlite3
 from pathlib import Path
 
@@ -64,20 +65,19 @@ def run_pipeline(
 
     # Gate 3: Cochrane match (NCT-bridge + literal ensemble)
     pw = pd.read_parquet(paths.pairwise70_index)
-    cdsr = sqlite3.connect(paths.cdsr_string_index)
     g3, g3_method, g3_review, g3_disagree = [], [], [], []
-    for _, r in matched.iterrows():
-        v = match_trial(
-            nct=r["nct_secondary"],
-            pactr_id=str(r["TrialID"] or ""),
-            pairwise70_index=pw,
-            cdsr_conn=cdsr,
-        )
-        g3.append(v.in_cochrane)
-        g3_method.append(v.method)
-        g3_review.append(v.review_id)
-        g3_disagree.append(v.ensemble_disagree)
-    cdsr.close()
+    with contextlib.closing(sqlite3.connect(paths.cdsr_string_index)) as cdsr:
+        for _, r in matched.iterrows():
+            v = match_trial(
+                nct=r["nct_secondary"],
+                pactr_id=str(r["TrialID"] or ""),
+                pairwise70_index=pw,
+                cdsr_conn=cdsr,
+            )
+            g3.append(v.in_cochrane)
+            g3_method.append(v.method)
+            g3_review.append(v.review_id)
+            g3_disagree.append(v.ensemble_disagree)
     matched["gate3_in_cochrane"] = g3
     matched["gate3_match_method"] = g3_method
     matched["gate3_cochrane_review_id"] = g3_review
