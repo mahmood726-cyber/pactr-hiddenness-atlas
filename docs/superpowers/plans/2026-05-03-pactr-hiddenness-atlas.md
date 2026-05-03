@@ -1759,11 +1759,15 @@ def test_compute_funnel_empty_raises():
 
 
 def test_clustered_bootstrap_ci_within_bounds():
+    # Needs >=3 country clusters so the bootstrap actually runs (the function
+    # returns (None, None) when len(clusters) < 3 — see test_undefined below).
     df = _trials_df([
         ("T1","tuberculosis","UGA",True,True,True,True,False),
         ("T2","tuberculosis","UGA",True,True,True,True,False),
         ("T3","tuberculosis","KEN",True,True,True,False,False),
         ("T4","tuberculosis","KEN",True,True,True,False,False),
+        ("T5","tuberculosis","ZAF",True,True,True,False,False),
+        ("T6","tuberculosis","ZAF",True,True,True,False,False),
     ])
     lo, hi = clustered_bootstrap_ci(df, "gate3_in_cochrane", "country_lead", n=200, seed=42)
     assert 0.0 <= lo <= hi <= 1.0
