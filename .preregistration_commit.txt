@@ -27,6 +27,7 @@ File: docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md
   receipt:   docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md.ots
   calendars: a.pool.opentimestamps.org, b.pool.opentimestamps.org,
              finney.calendar.eternitywall.com (all 3/3 accepted)
+  status:    SUPERSEDED by Amendment 1 (see below)
 
 File: e156-submission/protocol.md
   sha256:    af206c242e22279928531316e64b92c80199bf977d54f633dc2a36ed72fbf68c
@@ -66,6 +67,24 @@ A future commit (post-prereg) will add `scripts/verify_prereg.py` that:
   4. Confirms the prereg-v0.0.1 tag still resolves to the same commit
      SHA on origin.
 Any mismatch is a CRITICAL Sentinel BLOCK.
+
+Amendment 1 — prereg-v0.1.0-amend-1 (2026-05-04)
+------------------------------------------------
+See AMENDMENTS.md for the rationale (option-iii Sankey-monotonicity
+choice, two new schema columns added; original headline metric
+unchanged). The verifier (`scripts/verify_prereg.py`) parses the LAST
+`File:` block per path and uses that sha256 — so the amended sha below
+supersedes the original, and a fresh `verify_prereg` run reports OK.
+
+File: docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md
+  sha256:    fb540abe4897c86487cfcc4ea61387d910906f95b7fd276f6d8d40b4dcb68885
+  receipt:   docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md.ots
+  calendars: a.pool.opentimestamps.org, b.pool.opentimestamps.org,
+             finney.calendar.eternitywall.com (all 3/3 accepted, 2026-05-04)
+
+Internet Archive snapshots (Amendment 1)
+  Tag tree:  PENDING (snapshot taken post-tag; appended below this section in a follow-up commit)
+  Spec file: PENDING (snapshot taken post-tag; appended below this section in a follow-up commit)
 
 Anti-HARK commitment
 --------------------
