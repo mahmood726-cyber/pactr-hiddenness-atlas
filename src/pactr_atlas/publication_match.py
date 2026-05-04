@@ -32,7 +32,13 @@ _BASE = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 
 
 def _query_url(nct: str) -> str:
-    q = f'EXT_ID:"{nct}" AND SRC:CLINICALTRIALS'
+    # Europe PMC: find publications citing the NCT via free-text search,
+    # filtered to peer-reviewed sources only.
+    # SRC:MED = MEDLINE; SRC:PMC = PubMed Central full text.
+    # NOTE: EXT_ID field and clinicaltrials_gov field both return 0 hits for
+    # NCT IDs — even for known-published trials (e.g. PARADIGM-HF NCT01035255).
+    # Free-text NCT search is the reliable approach confirmed against 29 PACTR NCTs.
+    q = f'{nct} AND (SRC:MED OR SRC:PMC)'
     return f"{_BASE}?{urllib.parse.urlencode({'query': q, 'format': 'json'})}"
 
 

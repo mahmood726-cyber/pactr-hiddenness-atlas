@@ -5,6 +5,7 @@ from unittest.mock import patch
 import pytest
 
 from pactr_atlas.publication_match import (
+    _query_url,
     lookup_publication,
     Gate2Verdict,
     LookupFailed,
@@ -65,3 +66,22 @@ def test_lookup_publication_ambiguous_picks_lowest_pmid(cache_dir):
     assert v.published is True
     assert v.pmid == "30000010"
     assert v.ambiguous is True
+
+
+def test_query_url_targets_publication_sources_not_ctgov_mirror():
+    """Bug 6: original query hit SRC:CLINICALTRIALS (EPMC's CT.gov mirror) instead
+    of MED/PMC publication sources. Regression test pins the publication-source query.
+    The fix uses a free-text NCT search filtered to SRC:MED OR SRC:PMC — the
+    EXT_ID field proved non-functional for this lookup (returns 0 even for
+    known-published trials like PARADIGM-HF NCT01035255)."""
+    url = _query_url("NCT00760149")
+    # The query MUST search publication sources (MED = MEDLINE, PMC = PubMed Central)
+    assert "SRC%3AMED" in url or "SRC:MED" in url, (
+        "query must target SRC:MED publications"
+    )
+    # The query MUST NOT target SRC:CLINICALTRIALS (the registration mirror)
+    assert "SRC%3ACLINICALTRIALS" not in url and "SRC:CLINICALTRIALS" not in url, (
+        "query must NOT target SRC:CLINICALTRIALS (the CT.gov registration mirror)"
+    )
+    # The NCT ID must appear in the query
+    assert "NCT00760149" in url, "NCT ID must be in the query URL"
