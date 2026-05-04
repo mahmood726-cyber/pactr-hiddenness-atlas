@@ -1,0 +1,4 @@
+Study,Year,Data source,ID: CRS,Char: Methods,Char: Participants,Char: Interventions,Char: Outcomes,Char: Notes,review_doi
+Smith 2001,2001,PubMed,NCT12345678,RCT double-blind,Adults 18+,Drug A vs placebo,Primary CVD,Study registration: NCT12345678. Funded by NIHR.,10.1002/test1
+Jones 2005,2005,PubMed,,Cluster RCT,Children 5-12,Vaccine vs control,Infection rate,NCT87654321 registered in Africa.,10.1002/test1
+Brown 2010,2010,PubMed,,Crossover,Elderly,Intervention C,Quality of life,No registration.,10.1002/test1
