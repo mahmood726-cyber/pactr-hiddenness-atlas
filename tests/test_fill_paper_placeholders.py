@@ -1,3 +1,5 @@
+# sentinel:skip-file — {{...}} strings here are test fixtures for the
+# placeholder-filler; they are not unfilled template tokens (P1-unpopulated-placeholder).
 """Tests for scripts/fill_paper_placeholders.py."""
 import json
 from pathlib import Path

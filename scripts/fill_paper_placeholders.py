@@ -1,3 +1,6 @@
+# sentinel:skip-file — this file defines {{...}} patterns as dict-key string
+# literals that will later fill templates; they are intentional data, not
+# unfilled template tokens (P1-unpopulated-placeholder false-positive).
 """Fill {{...}} placeholders in v0.1.0 paper templates from live atlas data.
 
 Outputs `*.filled` beside each template; the original templates are read-only.
