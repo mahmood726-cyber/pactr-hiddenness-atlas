@@ -66,12 +66,30 @@ if __name__ == "__main__":
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
     from pactr_atlas.config import load_paths
+    from pactr_atlas.ictrp_loader import write_snapshot_metadata
     cfg = Path("paths.toml")
     if not cfg.exists():
         print(f"FAIL: {cfg} does not exist; copy paths.toml.example and edit")
         raise SystemExit(2)
     try:
-        run(load_paths(cfg))
+        paths = load_paths(cfg)
+        run(paths)
+        # Bug 2 fix: write snapshot metadata after preflight passes so the
+        # orchestrator and fill_paper_placeholders can read snapshot_date +
+        # n_pactr_trials.  We re-read and count here because check_ictrp_filter_size
+        # already validated the minimum; the count is cheap to recompute.
+        import pandas as pd
+        _df = pd.read_csv(paths.ictrp_snapshot, dtype=str, low_memory=False)
+        _n_pactr = int((_df["Source Register"].str.upper() == "PACTR").sum())
+        _meta_dir = Path("data/snapshots")
+        _meta_dir.mkdir(parents=True, exist_ok=True)
+        write_snapshot_metadata(
+            paths.ictrp_snapshot,
+            _meta_dir / "ictrp_metadata.json",
+            source_url="https://trialsearch.who.int/",
+            n_pactr_trials=_n_pactr,
+        )
+        print(f"snapshot metadata written to {_meta_dir / 'ictrp_metadata.json'}")
     except PreflightFailed as exc:
         print(f"PREFLIGHT_FAILED: {exc}")
         raise SystemExit(1)

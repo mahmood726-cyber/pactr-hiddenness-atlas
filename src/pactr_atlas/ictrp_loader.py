@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -13,6 +14,8 @@ REQUIRED_COLUMNS: tuple[str, ...] = (
     "Results URL", "Date registered", "Countries", "Primary Sponsor",
     "Recruitment Status",
 )
+
+_DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 
 
 class SchemaDriftError(ValueError):
@@ -32,15 +35,32 @@ def load_pactr_snapshot(path: Path) -> pd.DataFrame:
 
 
 def write_snapshot_metadata(
-    snapshot: Path, out_meta: Path, *, source_url: str
+    snapshot: Path,
+    out_meta: Path,
+    *,
+    source_url: str,
+    n_pactr_trials: int | None = None,
 ) -> dict:
+    """Write JSON metadata for the ICTRP snapshot to *out_meta*.
+
+    Extended fields (Bug 3):
+    - ``snapshot_date``: derived from a ``YYYY-MM-DD`` pattern in the filename
+      stem; falls back to ``fetched_at[:10]`` when the filename carries no date.
+    - ``n_pactr_trials``: caller-supplied count of PACTR rows after filtering.
+    """
     raw = snapshot.read_bytes()
-    meta = {
+    fetched_at = datetime.now(timezone.utc).isoformat()
+    m = _DATE_RE.search(snapshot.stem)
+    snapshot_date = m.group(1) if m else fetched_at[:10]
+    meta: dict = {
         "snapshot_path": str(snapshot),
         "source_url": source_url,
         "sha256": hashlib.sha256(raw).hexdigest(),
         "size_bytes": len(raw),
-        "fetched_at": datetime.now(timezone.utc).isoformat(),
+        "fetched_at": fetched_at,
+        "snapshot_date": snapshot_date,
     }
+    if n_pactr_trials is not None:
+        meta["n_pactr_trials"] = n_pactr_trials
     out_meta.write_text(json.dumps(meta, indent=2), encoding="utf-8")
     return meta

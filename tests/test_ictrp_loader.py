@@ -38,3 +38,38 @@ def test_write_snapshot_metadata(tmp_path, fixture_path):
     on_disk = json.loads((tmp_path / "meta.json").read_text(encoding="utf-8"))
     assert on_disk["sha256"] == meta["sha256"]
     assert on_disk["source_url"] == "file://test"
+
+
+# ---------------------------------------------------------------------------
+# Bug 3: snapshot_date derivation + n_pactr_trials in write_snapshot_metadata
+# ---------------------------------------------------------------------------
+
+def test_write_snapshot_metadata_date_from_filename(tmp_path):
+    """snapshot_date is derived from a YYYY-MM-DD pattern in the filename."""
+    src = tmp_path / "ictrp_export_2026-05-04.csv"
+    src.write_text("TrialID,Source Register\n", encoding="utf-8")
+    meta = write_snapshot_metadata(
+        src, tmp_path / "meta.json",
+        source_url="https://trialsearch.who.int/",
+        n_pactr_trials=5234,
+    )
+    assert meta["snapshot_date"] == "2026-05-04"
+    assert meta["n_pactr_trials"] == 5234
+    on_disk = json.loads((tmp_path / "meta.json").read_text(encoding="utf-8"))
+    assert on_disk["snapshot_date"] == "2026-05-04"
+    assert on_disk["n_pactr_trials"] == 5234
+
+
+def test_write_snapshot_metadata_date_fallback_to_fetched_at(tmp_path):
+    """When filename has no date, snapshot_date falls back to fetched_at[:10]."""
+    src = tmp_path / "ictrp_50trial.csv"
+    src.write_text("TrialID,Source Register\n", encoding="utf-8")
+    meta = write_snapshot_metadata(
+        src, tmp_path / "meta.json",
+        source_url="https://trialsearch.who.int/",
+        n_pactr_trials=42,
+    )
+    # fetched_at is an ISO timestamp like "2026-05-04T..."
+    expected_date = meta["fetched_at"][:10]
+    assert meta["snapshot_date"] == expected_date
+    assert meta["n_pactr_trials"] == 42

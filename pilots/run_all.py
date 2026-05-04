@@ -12,6 +12,7 @@ function-by-function — they are not patched in the integration test.
 from __future__ import annotations
 
 import contextlib
+import json
 import sqlite3
 from pathlib import Path
 
@@ -26,9 +27,32 @@ from pactr_atlas.ictrp_loader import load_pactr_snapshot
 from pactr_atlas.nct_bridge import extract_nct, is_tier0_invisible
 from pactr_atlas.results_posting import gate1_all
 
+_DEFAULT_META_PATH = Path("data/snapshots/ictrp_metadata.json")
+
+
+def _resolve_snapshot_date(paths: Paths, meta_path: Path | None) -> str:
+    """Return the snapshot_date string for atlas.csv.
+
+    Priority (Bug 4):
+    1. Read from *meta_path* JSON if the file exists.
+    2. Fall back to the stem of paths.ictrp_snapshot (e.g. ``ictrp_50trial``).
+    """
+    resolved = meta_path if meta_path is not None else _DEFAULT_META_PATH
+    if resolved.exists():
+        try:
+            meta = json.loads(resolved.read_text(encoding="utf-8"))
+            return str(meta["snapshot_date"])
+        except (KeyError, json.JSONDecodeError):
+            pass
+    return paths.ictrp_snapshot.stem
+
 
 def run_pipeline(
-    paths: Paths, *, out_dir: Path, n_bootstrap: int = 1000,
+    paths: Paths,
+    *,
+    out_dir: Path,
+    n_bootstrap: int = 1000,
+    meta_path: Path | None = None,
 ) -> Path:
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -90,6 +114,53 @@ def run_pipeline(
         dropped.to_csv(out_dir / "multi_condition_drops.csv", index=False)
 
     atlas = compute_funnel(matched, n_bootstrap=n_bootstrap)
-    atlas["snapshot_date"] = "fixture-50"
+    atlas["snapshot_date"] = _resolve_snapshot_date(paths, meta_path)
     atlas.to_csv(out_dir / "atlas.csv", index=False)
     return out_dir / "atlas.csv"
+
+
+if __name__ == "__main__":
+    import argparse
+    import io
+    import sys
+
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+
+    from pactr_atlas.config import load_paths
+
+    ap = argparse.ArgumentParser(description="PACTR Hiddenness Atlas — pipeline orchestrator")
+    ap.add_argument(
+        "--paths", default="paths.toml", type=Path,
+        help="TOML file with snapshot + index paths (default: paths.toml)",
+    )
+    ap.add_argument(
+        "--out-dir", default="data/processed", type=Path,
+        help="Output directory for atlas.csv and trials.parquet (default: data/processed)",
+    )
+    ap.add_argument(
+        "--n-bootstrap", default=1000, type=int,
+        help="Bootstrap iterations for CI computation (default: 1000)",
+    )
+    ap.add_argument(
+        "--meta-path", default=None, type=Path,
+        help="Path to ictrp_metadata.json written by preflight (default: data/snapshots/ictrp_metadata.json)",
+    )
+    args = ap.parse_args()
+
+    cfg = args.paths
+    if not cfg.exists():
+        print(f"FAIL: {cfg} does not exist; copy paths.toml.example and edit")
+        raise SystemExit(2)
+
+    try:
+        _paths = load_paths(cfg)
+        out = run_pipeline(
+            _paths,
+            out_dir=args.out_dir,
+            n_bootstrap=args.n_bootstrap,
+            meta_path=args.meta_path,
+        )
+        print(f"pipeline OK — atlas written to {out}")
+    except (RuntimeError, FileNotFoundError) as exc:
+        print(f"PIPELINE_FAILED: {exc}")
+        raise SystemExit(1)

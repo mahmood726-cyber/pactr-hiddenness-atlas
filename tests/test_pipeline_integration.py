@@ -45,3 +45,48 @@ def test_run_pipeline_produces_atlas_csv(fake_paths, tmp_path, monkeypatch):
     }
     # 50-trial fixture has 5 trials per condition, each registered
     assert (atlas["n_registered"] == 5).all()
+
+
+@pytest.mark.integration
+def test_run_pipeline_snapshot_date_from_metadata(fake_paths, tmp_path, monkeypatch):
+    """Bug 4: if metadata JSON present, orchestrator reads snapshot_date from it."""
+    from pactr_atlas import publication_match
+
+    monkeypatch.setattr(
+        publication_match, "lookup_publication",
+        lambda nct, cd: publication_match.Gate2Verdict(published=False, pmid=None),
+    )
+
+    import json
+    meta_dir = tmp_path / "snapshots"
+    meta_dir.mkdir()
+    meta_path = meta_dir / "ictrp_metadata.json"
+    meta_path.write_text(
+        json.dumps({"snapshot_date": "2026-05-04", "sha256": "abc", "n_pactr_trials": 9999}),
+        encoding="utf-8",
+    )
+
+    out = tmp_path / "out"
+    run_pipeline(fake_paths, out_dir=out, n_bootstrap=50, meta_path=meta_path)
+    atlas = pd.read_csv(out / "atlas.csv")
+    assert (atlas["snapshot_date"] == "2026-05-04").all()
+
+
+@pytest.mark.integration
+def test_run_pipeline_snapshot_date_fallback_to_stem(fake_paths, tmp_path, monkeypatch):
+    """Bug 4: when no metadata JSON exists, snapshot_date falls back to snapshot file stem."""
+    from pactr_atlas import publication_match
+
+    monkeypatch.setattr(
+        publication_match, "lookup_publication",
+        lambda nct, cd: publication_match.Gate2Verdict(published=False, pmid=None),
+    )
+
+    out = tmp_path / "out"
+    # Pass an explicit non-existent meta_path so the default path (which may
+    # exist on the developer's disk from a rehearsal) is not used.
+    absent_meta = tmp_path / "no_metadata.json"
+    run_pipeline(fake_paths, out_dir=out, n_bootstrap=50, meta_path=absent_meta)
+    atlas = pd.read_csv(out / "atlas.csv")
+    # fixture filename is ictrp_50trial.csv → stem is "ictrp_50trial"
+    assert (atlas["snapshot_date"] == "ictrp_50trial").all()
