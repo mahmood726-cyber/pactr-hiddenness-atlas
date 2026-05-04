@@ -22,6 +22,10 @@ data/snapshots/*.xml
 !data/snapshots/.gitkeep
 !data/snapshots/*_metadata.json
 
+# Pipeline outputs (atlas_baseline.csv is the only committed processed file)
+data/processed/*.parquet
+data/processed/atlas.csv
+
 # Local progress / scratch
 PROGRESS.md
 sentinel-findings.md
