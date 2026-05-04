@@ -30,6 +30,7 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q --strict-markers"
+pythonpath = ["."]
 markers = [
     "stochastic: tests with random sampling; nightly only",
     "smoke: pre-push smoke checks (<= 120s)",
