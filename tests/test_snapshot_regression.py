@@ -55,6 +55,8 @@ def test_atlas_matches_baseline_byte_for_byte(tmp_path, fixture_path, monkeypatc
         "n_gate2",
         "n_gate3",
         "pct_gate0_to_gate3",
+        "n_gate3_given_gate2",
+        "pct_gate0_to_gate3_given_gate2",
         "n_tier0_invisible",
     ]
     pd.testing.assert_frame_equal(

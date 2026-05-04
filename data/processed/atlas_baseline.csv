@@ -1,11 +1,11 @@
-condition,n_registered,n_gate1,n_gate2,n_gate3,pct_gate0_to_gate3,pct_gate0_to_gate3_ci_lo,pct_gate0_to_gate3_ci_hi,n_tier0_invisible,snapshot_date
-tuberculosis,5,5,0,2,0.4,0.0,0.8,2,fixture-50
-hiv,5,5,0,0,0.0,0.0,0.0,2,fixture-50
-sickle cell,5,5,0,1,0.2,0.0,0.6,2,fixture-50
-schistosomiasis,5,5,0,0,0.0,0.0,0.0,2,fixture-50
-maternal sepsis,5,5,0,2,0.4,0.0,0.8,2,fixture-50
-neonatal sepsis,5,5,0,0,0.0,0.0,0.0,2,fixture-50
-snakebite,5,5,0,1,0.2,0.0,0.6,2,fixture-50
-soil-transmitted helminths,5,5,0,0,0.0,0.0,0.0,2,fixture-50
-cervical cancer,5,5,0,1,0.2,0.0,0.6,2,fixture-50
-cholera,5,5,0,0,0.0,0.0,0.0,2,fixture-50
+condition,n_registered,n_gate1,n_gate2,n_gate3,pct_gate0_to_gate3,pct_gate0_to_gate3_ci_lo,pct_gate0_to_gate3_ci_hi,n_gate3_given_gate2,pct_gate0_to_gate3_given_gate2,n_tier0_invisible,snapshot_date
+tuberculosis,5,5,0,2,0.4,0.0,0.8,0,0.0,2,fixture-50
+hiv,5,5,0,0,0.0,0.0,0.0,0,0.0,2,fixture-50
+sickle cell,5,5,0,1,0.2,0.0,0.6,0,0.0,2,fixture-50
+schistosomiasis,5,5,0,0,0.0,0.0,0.0,0,0.0,2,fixture-50
+maternal sepsis,5,5,0,2,0.4,0.0,0.8,0,0.0,2,fixture-50
+neonatal sepsis,5,5,0,0,0.0,0.0,0.0,0,0.0,2,fixture-50
+snakebite,5,5,0,1,0.2,0.0,0.6,0,0.0,2,fixture-50
+soil-transmitted helminths,5,5,0,0,0.0,0.0,0.0,0,0.0,2,fixture-50
+cervical cancer,5,5,0,1,0.2,0.0,0.6,0,0.0,2,fixture-50
+cholera,5,5,0,0,0.0,0.0,0.0,0,0.0,2,fixture-50
