@@ -21,6 +21,8 @@ map_pactr_to_ictrp = _mod.map_pactr_to_ictrp
 _parse_pactr_date = _mod._parse_pactr_date
 _first_non_empty_date = _mod._first_non_empty_date
 REQUIRED_COLUMNS = _mod.REQUIRED_COLUMNS
+iter_year_windows = _mod.iter_year_windows
+iter_month_windows = _mod.iter_month_windows
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -212,3 +214,73 @@ def test_parse_pactr_date_valid():
     assert _parse_pactr_date("3/15/2020 12:00:00 AM") == "2020-03-15"
     assert _parse_pactr_date("") == ""
     assert _parse_pactr_date("  ") == ""
+
+
+# ---------------------------------------------------------------------------
+# Test 7: iter_year_windows — covers 2008..2026 inclusive (19 windows)
+# ---------------------------------------------------------------------------
+
+def test_year_windows_2008_to_2026_inclusive():
+    """Date-window iterator must cover 2008-01-01 through 2026-12-31."""
+    windows = iter_year_windows(2008, 2026)
+    assert len(windows) == 19, f"Expected 19 year windows, got {len(windows)}"
+    assert windows[0] == ("01/01/2008", "12/31/2008"), (
+        f"First window wrong: {windows[0]}"
+    )
+    assert windows[-1] == ("01/01/2026", "12/31/2026"), (
+        f"Last window wrong: {windows[-1]}"
+    )
+    # All windows have correct year in both start and end
+    for i, (start, end) in enumerate(windows):
+        year = 2008 + i
+        assert start == f"01/01/{year}", f"Window {i} start wrong: {start}"
+        assert end == f"12/31/{year}", f"Window {i} end wrong: {end}"
+
+
+def test_year_windows_single_year():
+    """Single-year range returns exactly 1 window."""
+    windows = iter_year_windows(2015, 2015)
+    assert len(windows) == 1
+    assert windows[0] == ("01/01/2015", "12/31/2015")
+
+
+def test_year_windows_inclusive_both_ends():
+    """Both year_from and year_to are included."""
+    windows = iter_year_windows(2020, 2022)
+    assert len(windows) == 3
+    assert windows[0][0] == "01/01/2020"
+    assert windows[2][1] == "12/31/2022"
+
+
+# ---------------------------------------------------------------------------
+# Test 8: iter_month_windows — 12 windows per year, correct day counts
+# ---------------------------------------------------------------------------
+
+def test_month_windows_non_leap_year():
+    """Non-leap year 2023: February ends on 28."""
+    windows = iter_month_windows(2023)
+    assert len(windows) == 12, f"Expected 12 monthly windows, got {len(windows)}"
+    # January
+    assert windows[0] == ("01/01/2023", "01/31/2023")
+    # February (non-leap)
+    assert windows[1] == ("02/01/2023", "02/28/2023")
+    # December
+    assert windows[11] == ("12/01/2023", "12/31/2023")
+
+
+def test_month_windows_leap_year():
+    """Leap year 2024: February ends on 29."""
+    windows = iter_month_windows(2024)
+    assert len(windows) == 12
+    assert windows[1] == ("02/01/2024", "02/29/2024"), (
+        f"Feb 2024 should end on 29, got: {windows[1]}"
+    )
+
+
+def test_month_windows_all_months_covered():
+    """All 12 months are represented in a monthly subdivision."""
+    windows = iter_month_windows(2020)
+    months_start = [w[0].split("/")[0] for w in windows]
+    assert months_start == [f"{m:02d}" for m in range(1, 13)], (
+        f"Expected months 01-12, got: {months_start}"
+    )
