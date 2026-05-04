@@ -2466,14 +2466,18 @@ def test_verify_sha256_mismatch_raises(tmp_path):
 
 
 def test_parse_manifest_extracts_sha_lines(tmp_path):
+    """Plan defect fix (Task 19): sha values must be real 64-char hexdigests.
+    _FILE_RE requires [0-9a-f]{64}; 6-char stubs like 'abc123' do not match."""
     m = tmp_path / "manifest.txt"
+    sha_x = "a" * 64
+    sha_y = "b" * 64
     m.write_text(
-        "File: docs/x.md\n  sha256: abc123\n"
-        "File: docs/y.md\n  sha256: def456\n",
+        f"File: docs/x.md\n  sha256: {sha_x}\n"
+        f"File: docs/y.md\n  sha256: {sha_y}\n",
         encoding="utf-8",
     )
     parsed = parse_manifest(m)
-    assert parsed == {"docs/x.md": "abc123", "docs/y.md": "def456"}
+    assert parsed == {"docs/x.md": sha_x, "docs/y.md": sha_y}
 ```
 
 - [ ] **Step 2: Run test**
