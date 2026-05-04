@@ -180,6 +180,8 @@ pactr-hiddenness-atlas/
 | `n_gate3` | in-Cochrane count |
 | `pct_gate0_to_gate3` | **headline metric per condition** |
 | `pct_gate0_to_gate3_ci_lo`, `_hi` | clustered bootstrap 95% CI (cluster = `country_lead`) |
+| `n_gate3_given_gate2` | nested-gate count: trials in Cochrane AND independently detected in Europe PMC (for monotone Sankey rendering) |
+| `pct_gate0_to_gate3_given_gate2` | nested-gate headline (sensitivity for the independent `pct_gate0_to_gate3`) |
 | `n_tier0_invisible` | trials with no NCT cross-registration |
 | `nct_bridge_share` | fraction of `gate3_in_cochrane` discovered via NCT bridge vs PACTR-ID literal |
 | `gate3_ensemble_disagree_count` | sensitivity column |
@@ -189,6 +191,7 @@ pactr-hiddenness-atlas/
 - Gates are boolean. Soft / partial matches go in `gate3_match_method`, never blur the gate itself.
 - `tier0_invisible` is a first-class column, not a derived view.
 - Snapshot date is denormalised onto every row; v0.2 refresh joins on `(trial_id, snapshot_date)`.
+- Gate3 is reported in two flavours: independent (`n_gate3`, headline) and nested-on-Gate2 (`n_gate3_given_gate2`, used for monotone Sankey + sensitivity). `n_gate3 > n_gate2` is valid; `n_gate3_given_gate2 <= min(n_gate2, n_gate3)` always holds.
 
 **Deliberately NOT in the data model:**
 - No effect-size, τ², MA pooling — registry-integrity audit, not meta-analysis.
