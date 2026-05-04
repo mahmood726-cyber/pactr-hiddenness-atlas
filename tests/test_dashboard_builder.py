@@ -16,6 +16,8 @@ def test_build_dashboard_writes_index_html(tmp_path):
         "pct_gate0_to_gate3": [0.15, 0.13, 0.06, 0.04],
         "pct_gate0_to_gate3_ci_lo": [0.10, 0.08, 0.02, None],
         "pct_gate0_to_gate3_ci_hi": [0.20, 0.18, 0.10, None],
+        "n_gate3_given_gate2": [20, 15, 4, 1],
+        "pct_gate0_to_gate3_given_gate2": [0.10, 0.10, 0.05, 0.04],
         "n_tier0_invisible": [80, 50, 30, 20],
     })
     out = tmp_path / "dashboard"
@@ -40,6 +42,8 @@ def test_build_dashboard_no_external_dependency(tmp_path):
         "n_gate1": [5], "n_gate2": [3], "n_gate3": [1],
         "pct_gate0_to_gate3": [0.1],
         "pct_gate0_to_gate3_ci_lo": [None], "pct_gate0_to_gate3_ci_hi": [None],
+        "n_gate3_given_gate2": [1],
+        "pct_gate0_to_gate3_given_gate2": [0.1],
         "n_tier0_invisible": [4],
     })
     build_dashboard(atlas, tmp_path)

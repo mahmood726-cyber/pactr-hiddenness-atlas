@@ -39,31 +39,42 @@ def _sankey_svg(atlas: pd.DataFrame) -> str:
     n_reg = int(atlas["n_registered"].sum())
     n_g1 = int(atlas["n_gate1"].sum())
     n_g2 = int(atlas["n_gate2"].sum())
-    n_g3 = int(atlas["n_gate3"].sum())
+    # Use nested-gate count for rightmost bar so bars are monotonically decreasing.
+    n_g3_nested = int(atlas["n_gate3_given_gate2"].sum())
     if n_reg == 0:
         return "<svg class='funnel-svg'></svg>"
     h = lambda n: max(2, int(120 * n / n_reg))
     return (
         "<svg class='funnel-svg' width='720' height='180'>"
-        f"<rect x='0'   y='30' width='80' height='{h(n_reg)}' fill='#3a6'/>"
-        f"<rect x='200' y='30' width='80' height='{h(n_g1)}'  fill='#69b'/>"
-        f"<rect x='400' y='30' width='80' height='{h(n_g2)}'  fill='#a86'/>"
-        f"<rect x='600' y='30' width='80' height='{h(n_g3)}'  fill='#c63'/>"
+        f"<rect x='0'   y='30' width='80' height='{h(n_reg)}'      fill='#3a6'/>"
+        f"<rect x='200' y='30' width='80' height='{h(n_g1)}'       fill='#69b'/>"
+        f"<rect x='400' y='30' width='80' height='{h(n_g2)}'       fill='#a86'/>"
+        f"<rect x='600' y='30' width='80' height='{h(n_g3_nested)}' fill='#c63'/>"
         f"<text x='40'  y='170' text-anchor='middle'>registered ({n_reg})</text>"
         f"<text x='240' y='170' text-anchor='middle'>results ({n_g1})</text>"
         f"<text x='440' y='170' text-anchor='middle'>published ({n_g2})</text>"
-        f"<text x='640' y='170' text-anchor='middle'>cochrane ({n_g3})</text>"
-        f"<text x='360' y='15' text-anchor='middle' font-weight='bold'>Sankey funnel: gate 0 -> gate 3</text>"
+        f"<text x='640' y='170' text-anchor='middle'>cochrane ({n_g3_nested})</text>"
+        f"<text x='360' y='15' text-anchor='middle' font-weight='bold'>Sankey funnel: gate 0 -&gt; gate 3</text>"
         "</svg>"
     )
 
 
 def _table_html(atlas: pd.DataFrame) -> str:
+    caption = (
+        "<p style=\"font-size:12px;color:#666\"><em>n_gate3</em> = trials in a Cochrane review "
+        "(independent of publication-detection); "
+        "<em>n_gate3_given_gate2</em> = trials in a Cochrane review AND independently detected "
+        "in Europe PMC (used for the Sankey above).</p>"
+    )
     cols = ["condition", "n_registered", "n_gate1", "n_gate2", "n_gate3",
-            "pct_gate0_to_gate3", "n_tier0_invisible"]
+            "pct_gate0_to_gate3", "n_gate3_given_gate2",
+            "pct_gate0_to_gate3_given_gate2", "n_tier0_invisible"]
     df = atlas[cols].copy()
     df["pct_gate0_to_gate3"] = (df["pct_gate0_to_gate3"] * 100).round(1).astype(str) + "%"
-    return df.to_html(index=False, border=0)
+    df["pct_gate0_to_gate3_given_gate2"] = (
+        (df["pct_gate0_to_gate3_given_gate2"] * 100).round(1).astype(str) + "%"
+    )
+    return caption + df.to_html(index=False, border=0)
 
 
 def _tier0_svg(atlas: pd.DataFrame) -> str:
