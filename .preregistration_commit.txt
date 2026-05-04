@@ -82,9 +82,11 @@ File: docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md
   calendars: a.pool.opentimestamps.org, b.pool.opentimestamps.org,
              finney.calendar.eternitywall.com (all 3/3 accepted, 2026-05-04)
 
-Internet Archive snapshots (Amendment 1)
-  Tag tree:  PENDING (snapshot taken post-tag; appended below this section in a follow-up commit)
-  Spec file: PENDING (snapshot taken post-tag; appended below this section in a follow-up commit)
+Internet Archive snapshots (Amendment 1, 2026-05-04T15:01:02Z, both HTTP 200)
+  Tag tree:
+    https://web.archive.org/web/20260504150102/https://github.com/mahmood726-cyber/pactr-hiddenness-atlas/tree/prereg-v0.1.0-amend-1
+  Spec file:
+    https://web.archive.org/web/20260504150102/https://github.com/mahmood726-cyber/pactr-hiddenness-atlas/blob/prereg-v0.1.0-amend-1/docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md
 
 Anti-HARK commitment
 --------------------
