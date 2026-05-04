@@ -63,3 +63,47 @@ def test_clustered_bootstrap_ci_undefined_for_k_lt_3():
     ])
     lo, hi = clustered_bootstrap_ci(df, "gate3_in_cochrane", "country_lead", n=100, seed=42)
     assert lo is None and hi is None  # k=2 clusters → undefined
+
+
+def test_compute_funnel_emits_nested_gate3_columns():
+    """nested-on-gate2 flavour must be present alongside the independent flavour."""
+    # 4 trials with gate2/gate3 in all four combinations:
+    #   gate2=F gate3=F, gate2=F gate3=T, gate2=T gate3=F, gate2=T gate3=T
+    # Only the last trial has BOTH gate2 AND gate3 → n_gate3_given_gate2 == 1.
+    df = _trials_df([
+        ("T1","tuberculosis","UGA",True,False,False,False,False),
+        ("T2","tuberculosis","KEN",True,False,False,True, False),
+        ("T3","tuberculosis","ZAF",True,False,True, False,False),
+        ("T4","tuberculosis","ETH",True,False,True, True, False),
+    ])
+    out = compute_funnel(df, n_bootstrap=50)
+    tb = out[out["condition"] == "tuberculosis"].iloc[0]
+    assert "n_gate3_given_gate2" in out.columns, "n_gate3_given_gate2 column missing"
+    assert "pct_gate0_to_gate3_given_gate2" in out.columns, "pct_gate0_to_gate3_given_gate2 column missing"
+    # Only T4 has both gate2=True AND gate3=True.
+    assert tb["n_gate3_given_gate2"] == 1
+    # pct = 1 / 4 = 0.25
+    assert tb["pct_gate0_to_gate3_given_gate2"] == pytest.approx(0.25)
+    # Independent columns are unchanged.
+    assert tb["n_gate2"] == 2
+    assert tb["n_gate3"] == 2
+
+
+def test_n_gate3_given_gate2_le_min_of_n_gate2_n_gate3():
+    """Nested count cannot exceed either parent gate."""
+    df = _trials_df([
+        ("T1","tuberculosis","UGA", True,True,True, True, False),
+        ("T2","tuberculosis","KEN", True,True,False,True, False),
+        ("T3","tuberculosis","ZAF", True,True,True, False,False),
+        ("T4","hiv",         "UGA", True,True,True, True, False),
+        ("T5","hiv",         "KEN", True,True,True, True, False),
+        ("T6","hiv",         "ZAF", True,True,False,False,False),
+    ])
+    out = compute_funnel(df, n_bootstrap=50)
+    for _, row in out.iterrows():
+        assert row["n_gate3_given_gate2"] <= row["n_gate2"], (
+            f"{row['condition']}: n_gate3_given_gate2 {row['n_gate3_given_gate2']} > n_gate2 {row['n_gate2']}"
+        )
+        assert row["n_gate3_given_gate2"] <= row["n_gate3"], (
+            f"{row['condition']}: n_gate3_given_gate2 {row['n_gate3_given_gate2']} > n_gate3 {row['n_gate3']}"
+        )

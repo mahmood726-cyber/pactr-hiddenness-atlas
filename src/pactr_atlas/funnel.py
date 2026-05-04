@@ -55,12 +55,17 @@ def compute_funnel(df: pd.DataFrame, *, n_bootstrap: int = 1000) -> pd.DataFrame
         ci_lo, ci_hi = clustered_bootstrap_ci(
             sub, "gate3_in_cochrane", "country_lead", n=n_bootstrap,
         )
+        # Nested-on-gate2: count trials where BOTH gate2 AND gate3 are True.
+        n_g3_nested = int((sub["gate2_published"] & sub["gate3_in_cochrane"]).sum())
+        pct_nested = n_g3_nested / n_reg if n_reg else float("nan")
         rows.append({
             "condition": cond, "n_registered": n_reg,
             "n_gate1": n_g1, "n_gate2": n_g2, "n_gate3": n_g3,
             "pct_gate0_to_gate3": pct,
             "pct_gate0_to_gate3_ci_lo": ci_lo,
             "pct_gate0_to_gate3_ci_hi": ci_hi,
+            "n_gate3_given_gate2": n_g3_nested,
+            "pct_gate0_to_gate3_given_gate2": pct_nested,
             "n_tier0_invisible": n_t0,
         })
     return pd.DataFrame(rows)
