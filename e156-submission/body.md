@@ -1,0 +1,6 @@
+<!-- e156-submission/body.md (template; values filled post-engine-run) -->
+<!--  S1=Question (~22w) S2=Dataset (~20w) S3=Method (~20w) S4=Result (~30w)
+      S5=Robustness (~22w) S6=Interpretation (~22w) S7=Boundary (~20w)
+      Total <= 156 words. -->
+
+How much African evidence registered with WHO's African primary registry actually reaches global synthesis? We audited every PACTR-registered trial in ten high-burden African conditions (tuberculosis, HIV, sickle cell, schistosomiasis, maternal sepsis, neonatal sepsis, snakebite, soil-transmitted helminths, cervical cancer, cholera) using the WHO ICTRP weekly export. Each trial was tracked across four gates: registered, results-posted, peer-published, cited in a Cochrane meta-analysis. Of {{N_REGISTERED}} trials registered with PACTR, only {{HEADLINE_PCT}}% reached a Cochrane MA via NCT cross-registration; {{TIER0_PCT}}% had no NCT cross-reference at all. Sensitivity check using direct PACTR-ID literal search of CDSR added <{{ENSEMBLE_DELTA}}pp; per-condition spread ranged from {{MIN_PCT}}% to {{MAX_PCT}}%. Cochrane synthesis under-represents the African evidence ecosystem — the gap is not random but concentrated in conditions with the highest local burden. Findings reflect ICTRP/Cochrane snapshots fixed at {{SNAPSHOT_DATE}}; PACTR-only trials with no NCT remain structurally invisible.
