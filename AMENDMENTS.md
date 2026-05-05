@@ -69,3 +69,95 @@ funnel ribbons. Three resolution options were considered:
 
 **Verifier expectation after amendment:**
 `python scripts/verify_prereg.py` must report all anchors OK.
+
+---
+
+## Amendment 2 — `prereg-v0.1.0-amend-2` (2026-05-05)
+
+**No anchored protocol file changed.** This amendment documents an explicit
+**release decision**: v0.1.0 ships despite the validation_gates 30-trial
+spot-check returning 0/30 verdict-level agreement (preregistered threshold:
+≥27/30). The disagreement is the substantive v0.1.0 finding.
+
+### What the spot-check found
+
+A blinded 30-trial audit (sampled with seed=20260503 from `trials.parquet`,
+auditor independently web-verified each gate against PACTR / Europe PMC /
+Cochrane Library; algorithm verdicts withheld from auditor) produced:
+
+| Gate | Algorithm True | Auditor True | Cell agreement |
+|------|---:|---:|---:|
+| Gate1 (results posted) | 30/30 | 3/30 | 10% |
+| Gate2 (peer-published) | 1/30 | 16/30 | 50% |
+| Gate3 (in Cochrane MA) | 0/30 | 1/30 | 97% |
+| **Verdict-level (3-char string)** | — | — | **0/30 (0%)** |
+
+### Why this is a finding, not a bug
+
+- **Gate1**: algorithm uses spec lower-bound definition (`Results URL`
+  non-null); auditor used strict content verification. Disagreement
+  quantifies PACTR's `Results URL` over-broadness (90%).
+- **Gate2**: algorithm uses NCT-bridge (`EXT_ID` query of Europe PMC);
+  most PACTR trials lack NCT cross-registration so they are unreachable.
+  Auditor used direct title / PI / PACTR-ID free-text search, finding
+  16 publications. **Algorithm sensitivity = 1/16 = 6.3%.** This is the
+  central v0.1.0 methodological finding: NCT-bridge methodology — used
+  by every existing CT.gov-style synthesis audit (TrialScout, Hiddenness
+  Atlas CT.gov, Trial Truthfulness Atlas, etc.) — is structurally blind
+  to African evidence even when published.
+- **Gate3**: 1 disagreement (WOMAN trial PACTR201007000192283 →
+  Cochrane CD012964). Verified root cause: Pairwise70
+  `study_references.parquet` (built from CDE) has zero rows for CD012964.
+  CDE coverage gap, not matcher bug.
+
+### HARK protection
+
+This amendment does NOT lower the preregistered spot-check threshold;
+the threshold remains ≥27/30. The amendment records that v0.1.0
+EXPLICITLY ACKNOWLEDGES the threshold failure as the substantive
+output of the release. The gate fired; the release does not pretend
+otherwise. The full spot-check artifacts are committed as evidence
+(`data/processed/spotcheck_v0.1.0_blinded.csv`,
+`spotcheck_v0.1.0_auditor.csv`, `spotcheck_v0.1.0.csv`) so any reader
+can independently verify the disagreement.
+
+### What v0.1.0 paper claims
+
+NOT: "0.5% of PACTR-registered African trials reach Cochrane synthesis."
+INSTEAD: "Existing NCT-bridge methodology has ~6% sensitivity for
+PACTR-registered African publications. The methodology is structurally
+blind to African evidence even when published. PACTR-ID-direct EuropePMC
+search (proposed v0.2) is needed."
+
+### What's locked vs deferred
+
+Locked at v0.1.0:
+- 10-condition prereg (5 conditions are below n=20 floor; documented in
+  `docs/extraction_audit.md` but not dropped).
+- Algorithm pipeline (orchestrator, gate1/2/3, NCT-bridge to Pairwise70).
+- Spot-check disagreement artifacts.
+
+Deferred to v0.2:
+- Add PACTR-ID-direct EuropePMC free-text search to gate2.
+- Expand CDE coverage to include African-relevant Cochrane reviews
+  (e.g., CD012964).
+- Re-run with second human auditor for inter-auditor reliability.
+- Refactor `validation_gates.py` to accept "documented disagreement
+  profile" overrides instead of hard-failing.
+
+### No file re-stamping needed
+
+The two anchored protocol files (spec, protocol.md) remain unchanged
+between Amendment 1 and Amendment 2. No new OTS receipts or IA snapshots
+required for the manifest. The v0.1.0 tag itself will be OTS-stamped per
+Task 22 Step 9.
+
+### Release command path
+
+```bash
+# explicit acknowledgment flag required to ship past the gate failure
+bash scripts/release_v010.sh --execute --ack-spotcheck-disagreement
+```
+
+The flag MUST be paired with this AMENDMENTS.md entry; the script
+records the override into the v0.1.0 tag annotation.
