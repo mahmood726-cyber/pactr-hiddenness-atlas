@@ -88,6 +88,32 @@ Internet Archive snapshots (Amendment 1, 2026-05-04T15:01:02Z, both HTTP 200)
   Spec file:
     https://web.archive.org/web/20260504150102/https://github.com/mahmood726-cyber/pactr-hiddenness-atlas/blob/prereg-v0.1.0-amend-1/docs/superpowers/specs/2026-05-03-pactr-hiddenness-atlas-design.md
 
+Release v0.1.0 (2026-05-05)
+---------------------------
+See AMENDMENTS.md Amendment 2 for the methodology-calibration pivot
+rationale and the explicit acknowledgment of the spot-check 0/30
+disagreement (the substantive v0.1.0 finding).
+
+Tag         : v0.1.0 (annotated)
+Released    : 2026-05-05
+PACTR snap  : data/snapshots/ictrp_metadata.json (5878 trials,
+              full-registry date-paginated scrape; 2019 lost to
+              server timeout, ~456 trials est)
+              snap-CSV sha256: 44f99b1461fa8709...
+              metadata.json sha256: 9238f3227f3a01b7...
+              receipt: data/snapshots/ictrp_metadata.json.ots
+              calendars: a.pool, b.pool, finney/eternitywall (3/3 OK)
+
+Spot-check  : data/processed/spotcheck_v0.1.0.csv (Amendment 2 evidence)
+              sha256: 671670ffa6fc4a09...
+              receipt: data/processed/spotcheck_v0.1.0.csv.ots
+              calendars: a.pool, b.pool, finney/eternitywall (3/3 OK)
+
+Internet Archive snapshot of v0.1.0 tag tree (2026-05-05T10:45:26Z, HTTP 200):
+  https://web.archive.org/web/20260505104526/https://github.com/mahmood726-cyber/pactr-hiddenness-atlas/tree/v0.1.0
+
+Pages       : https://mahmood726-cyber.github.io/pactr-hiddenness-atlas/ (HTTP 200, built)
+
 Anti-HARK commitment
 --------------------
 The 10 conditions, the four-gate definitions, the Cochrane-match
