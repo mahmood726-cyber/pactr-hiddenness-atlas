@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>PACTR Hiddenness Atlas — preregistration v0.0.1</title>
+<style>
+  body { font: 14px/1.45 system-ui, -apple-system, sans-serif; margin: 24px; color:#222; }
+  h1 { margin-bottom: 4px; } h2 { margin-top: 24px; }
+  table { border-collapse: collapse; margin-top: 8px; }
+  th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: right; }
+  th:first-child, td:first-child { text-align: left; }
+  .funnel-svg { display: block; margin: 12px 0; }
+</style>
+</head><body>
+<h1>PACTR Hiddenness Atlas</h1>
+<p><em>Preregistration v0.0.1 — fixture-mode dashboard.</em></p>
+<h2>Headline funnel (Sankey)</h2>
+<svg class='funnel-svg' width='720' height='180'><rect x='0'   y='30' width='80' height='120'      fill='#3a6'/><rect x='200' y='30' width='80' height='120'       fill='#69b'/><rect x='400' y='30' width='80' height='4'       fill='#a86'/><rect x='600' y='30' width='80' height='2' fill='#c63'/><text x='40'  y='170' text-anchor='middle'>registered (768)</text><text x='240' y='170' text-anchor='middle'>results (768)</text><text x='440' y='170' text-anchor='middle'>published (28)</text><text x='640' y='170' text-anchor='middle'>cochrane (1)</text><text x='360' y='15' text-anchor='middle' font-weight='bold'>Sankey funnel: gate 0 -&gt; gate 3</text></svg>
+<h2>Per-condition table</h2>
+<p style="font-size:12px;color:#666"><em>n_gate3</em> = trials in a Cochrane review (independent of publication-detection); <em>n_gate3_given_gate2</em> = trials in a Cochrane review AND independently detected in Europe PMC (used for the Sankey above).</p><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>condition</th>
+      <th>n_registered</th>
+      <th>n_gate1</th>
+      <th>n_gate2</th>
+      <th>n_gate3</th>
+      <th>pct_gate0_to_gate3</th>
+      <th>n_gate3_given_gate2</th>
+      <th>pct_gate0_to_gate3_given_gate2</th>
+      <th>n_tier0_invisible</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>tuberculosis</td>
+      <td>75</td>
+      <td>75</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <td>hiv</td>
+      <td>455</td>
+      <td>455</td>
+      <td>18</td>
+      <td>4</td>
+      <td>0.9%</td>
+      <td>1</td>
+      <td>0.2%</td>
+      <td>435</td>
+    </tr>
+    <tr>
+      <td>sickle cell</td>
+      <td>62</td>
+      <td>62</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>schistosomiasis</td>
+      <td>14</td>
+      <td>14</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <td>maternal sepsis</td>
+      <td>97</td>
+      <td>97</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>95</td>
+    </tr>
+    <tr>
+      <td>neonatal sepsis</td>
+      <td>7</td>
+      <td>7</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>snakebite</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>soil-transmitted helminths</td>
+      <td>11</td>
+      <td>11</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <td>cervical cancer</td>
+      <td>35</td>
+      <td>35</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>34</td>
+    </tr>
+    <tr>
+      <td>cholera</td>
+      <td>8</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Tier-0 invisibility (no NCT cross-registration)</h2>
+<svg class='funnel-svg' width='720' height='260'><rect x='160' y='20' width='400' height='16' fill='#933'/><text x='150' y='32' text-anchor='end'>neonatal sepsis</text><text x='570' y='32'>7/7</text><rect x='160' y='42' width='400' height='16' fill='#933'/><text x='150' y='54' text-anchor='end'>schistosomiasis</text><text x='570' y='54'>14/14</text><rect x='160' y='64' width='400' height='16' fill='#933'/><text x='150' y='76' text-anchor='end'>cholera</text><text x='570' y='76'>8/8</text><rect x='160' y='86' width='400' height='16' fill='#933'/><text x='150' y='98' text-anchor='end'>snakebite</text><text x='570' y='98'>4/4</text><rect x='160' y='108' width='400' height='16' fill='#933'/><text x='150' y='120' text-anchor='end'>soil-transmitted helminths</text><text x='570' y='120'>11/11</text><rect x='160' y='130' width='391' height='16' fill='#933'/><text x='150' y='142' text-anchor='end'>maternal sepsis</text><text x='561' y='142'>95/97</text><rect x='160' y='152' width='388' height='16' fill='#933'/><text x='150' y='164' text-anchor='end'>cervical cancer</text><text x='558' y='164'>34/35</text><rect x='160' y='174' width='384' height='16' fill='#933'/><text x='150' y='186' text-anchor='end'>tuberculosis</text><text x='554' y='186'>72/75</text><rect x='160' y='196' width='382' height='16' fill='#933'/><text x='150' y='208' text-anchor='end'>hiv</text><text x='552' y='208'>435/455</text><rect x='160' y='218' width='367' height='16' fill='#933'/><text x='150' y='230' text-anchor='end'>sickle cell</text><text x='537' y='230'>57/62</text></svg>
+<p style="font-size:12px;color:#666;margin-top:24px">Source: WHO ICTRP weekly export. Snapshot pinned by sha256 in <code>data/snapshots/ictrp_metadata.json</code>. Anchored on Bitcoin via OpenTimestamps; see <code>.preregistration_commit.txt</code>.</p>
+</body></html>

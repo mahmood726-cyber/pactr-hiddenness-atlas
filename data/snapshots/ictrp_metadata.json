@@ -1,0 +1,12 @@
+{
+  "snapshot_path": "C:\\Users\\user\\data\\ictrp\\pactr_full_2026-05-04.csv",
+  "source_url": "pactr.samrc.ac.za/Search_v2.aspx (date-paginated full registry; 2019 lost to server timeout)",
+  "sha256": "44f99b1461fa87097c9a16f1b14863f7d2163af93a8c8e3da5e4f7ffdc419af4",
+  "size_bytes": 9089934,
+  "fetched_at": "2026-05-04T21:56:01.348258+00:00",
+  "snapshot_date": "2026-05-04",
+  "n_pactr_trials": 5878,
+  "subset_mode": false,
+  "subset_method": "date-paginated full PACTR registry, 2008-2026 year windows",
+  "known_gaps": "2019 missing (~456 trials est); PACTR server-side download timeout 9 attempts"
+}
