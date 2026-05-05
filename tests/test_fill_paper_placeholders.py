@@ -9,6 +9,7 @@ import pytest
 
 from scripts.fill_paper_placeholders import (
     MissingInputError,
+    compute_auditor_replacements,
     compute_replacements,
     fill_template,
     parse_prereg_commit_sha,
@@ -26,6 +27,7 @@ def _atlas() -> pd.DataFrame:
         {
             "condition": ["a", "b", "c"],
             "n_registered": [100, 200, 50],
+            "n_gate2": [20, 40, 10],
             "n_gate3": [10, 30, 5],
             "n_gate3_given_gate2": [8, 25, 4],
             "n_tier0_invisible": [40, 60, 20],
@@ -51,6 +53,10 @@ def test_compute_replacements_correct_arithmetic():
     r = compute_replacements(_atlas(), _meta(), _FULL_SHA)
     # n_reg_total = 350; n_gate3_total = 45; 100*45/350 = 12.857... -> 12.9
     assert r["{{HEADLINE_PCT}}"] == "12.9"
+    # ALGO_GATE3_PCT is an alias for HEADLINE_PCT
+    assert r["{{ALGO_GATE3_PCT}}"] == "12.9"
+    # n_gate2_total = 70; 100*70/350 = 20.0
+    assert r["{{ALGO_GATE2_PCT}}"] == "20.0"
     # tier0 = 120; 100*120/350 = 34.285... -> 34.3
     assert r["{{TIER0_PCT}}"] == "34.3"
     # ensemble_delta = 100*(45-37)/350 = 2.285... -> 2.3
@@ -72,6 +78,7 @@ def test_compute_replacements_zero_registered_raises():
         {
             "condition": ["x"],
             "n_registered": [0],
+            "n_gate2": [0],
             "n_gate3": [0],
             "n_gate3_given_gate2": [0],
             "n_tier0_invisible": [0],
@@ -149,3 +156,47 @@ def test_fill_template_no_placeholders_returns_text_unchanged(tmp_path: Path):
     tpl.write_text("Plain text, no placeholders.", encoding="utf-8")
     result = fill_template(tpl, {})
     assert result == "Plain text, no placeholders."
+
+
+# ---------------------------------------------------------------------------
+# compute_auditor_replacements
+# ---------------------------------------------------------------------------
+
+
+def _make_spotcheck_csv(tmp_path: Path, rows: list[dict]) -> Path:
+    """Write a minimal spot-check CSV with the columns the filler reads."""
+    df = pd.DataFrame(rows)
+    p = tmp_path / "spotcheck.csv"
+    df.to_csv(p, index=False)
+    return p
+
+
+def test_compute_auditor_replacements_correct_arithmetic(tmp_path: Path):
+    # 30 rows: auditor_gate2 True=16, auditor_gate3 True=1, algorithm_gate2 True=1
+    rows = (
+        [{"algorithm_gate2": "True", "auditor_gate2": "True", "auditor_gate3": "True"}]
+        + [{"algorithm_gate2": "False", "auditor_gate2": "True", "auditor_gate3": "False"}] * 15
+        + [{"algorithm_gate2": "False", "auditor_gate2": "False", "auditor_gate3": "False"}] * 14
+    )
+    assert len(rows) == 30
+    csv_path = _make_spotcheck_csv(tmp_path, rows)
+    r = compute_auditor_replacements(csv_path)
+    assert r["{{N_AUDITED}}"] == "30"
+    assert r["{{AUD_GATE2_T}}"] == "16"
+    # 100 * 16 / 30 = 53.333... -> "53.3"
+    assert r["{{AUD_GATE2_PCT}}"] == "53.3"
+    assert r["{{AUD_GATE3_T}}"] == "1"
+    # 100 * 1 / 16 = 6.25 -> "6.2" (Python :.1f banker's rounding)
+    assert r["{{ALGO_GATE2_SENS}}"] == "6.2"
+
+
+def test_compute_auditor_replacements_handles_zero_auditor_gate2(tmp_path: Path):
+    # All auditor_gate2 False -> ALGO_GATE2_SENS must be "n/a" (avoid ZeroDivisionError)
+    rows = [
+        {"algorithm_gate2": "False", "auditor_gate2": "False", "auditor_gate3": "False"}
+    ] * 10
+    csv_path = _make_spotcheck_csv(tmp_path, rows)
+    r = compute_auditor_replacements(csv_path)
+    assert r["{{ALGO_GATE2_SENS}}"] == "n/a"
+    assert r["{{AUD_GATE2_T}}"] == "0"
+    assert r["{{AUD_GATE3_T}}"] == "0"

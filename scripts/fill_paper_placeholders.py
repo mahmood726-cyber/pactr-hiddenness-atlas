@@ -43,11 +43,17 @@ def compute_replacements(
     if n_reg_total == 0:
         raise ValueError("atlas reports zero registered trials — cannot compute pcts")
     n_pactr = int(metadata["n_pactr_trials"])
+    algo_gate3_pct = f"{100 * atlas['n_gate3'].sum() / n_reg_total:.1f}"
+    algo_gate2_pct = f"{100 * atlas['n_gate2'].sum() / n_reg_total:.1f}"
     return {
         "{{N_REGISTERED}}": str(n_reg_total),
         "{{N_PACTR}}": str(n_pactr),
         "{{N_DROPPED}}": str(n_pactr - n_reg_total),
-        "{{HEADLINE_PCT}}": f"{100 * atlas['n_gate3'].sum() / n_reg_total:.1f}",
+        # Legacy alias kept for backward-compat with old templates
+        "{{HEADLINE_PCT}}": algo_gate3_pct,
+        # New canonical names for the methodology-calibration pivot
+        "{{ALGO_GATE3_PCT}}": algo_gate3_pct,
+        "{{ALGO_GATE2_PCT}}": algo_gate2_pct,
         "{{TIER0_PCT}}": f"{100 * atlas['n_tier0_invisible'].sum() / n_reg_total:.1f}",
         "{{ENSEMBLE_DELTA}}": (
             f"{100 * (atlas['n_gate3'].sum() - atlas['n_gate3_given_gate2'].sum()) / n_reg_total:.1f}"
@@ -58,6 +64,24 @@ def compute_replacements(
         "{{SNAPSHOT_SHA8}}": str(metadata["sha256"])[:8],
         "{{TRIALSCOUT_BASELINE}}": str(TRIALSCOUT_BASELINE),
         "{{PREREG_COMMIT_SHORT}}": prereg_commit_sha[:7],
+    }
+
+
+def compute_auditor_replacements(spotcheck_path: Path) -> dict[str, str]:
+    """Return auditor-derived placeholders from the blinded spot-check CSV."""
+    df = pd.read_csv(spotcheck_path)
+    n = len(df)
+    aud_g2 = df["auditor_gate2"].astype(str).str.lower().isin(["true", "1", "yes"]).sum()
+    aud_g3 = df["auditor_gate3"].astype(str).str.lower().isin(["true", "1", "yes"]).sum()
+    algo_g2 = df["algorithm_gate2"].astype(str).str.lower().isin(["true", "1", "yes"]).sum()
+    return {
+        "{{N_AUDITED}}": str(n),
+        "{{AUD_GATE2_T}}": str(int(aud_g2)),
+        "{{AUD_GATE2_PCT}}": f"{100 * aud_g2 / n:.1f}",
+        "{{AUD_GATE3_T}}": str(int(aud_g3)),
+        "{{ALGO_GATE2_SENS}}": (
+            f"{100 * algo_g2 / aud_g2:.1f}" if aud_g2 > 0 else "n/a"
+        ),
     }
 
 
@@ -107,6 +131,12 @@ def main(argv=None):
         help="Path to preregistration anchor manifest",
     )
     p.add_argument(
+        "--spotcheck",
+        default="data/processed/spotcheck_v0.1.0.csv",
+        type=Path,
+        help="Path to blinded spot-check CSV (auditor_gate2/gate3 columns required)",
+    )
+    p.add_argument(
         "--templates-dir",
         default="e156-submission",
         type=Path,
@@ -122,6 +152,16 @@ def main(argv=None):
     metadata = json.loads(args.metadata.read_text(encoding="utf-8"))
     prereg_sha = parse_prereg_commit_sha(args.manifest)
     replacements = compute_replacements(atlas, metadata, prereg_sha)
+
+    if args.spotcheck.exists():
+        auditor_replacements = compute_auditor_replacements(args.spotcheck)
+        replacements.update(auditor_replacements)
+        print(f"Spot-check loaded: {args.spotcheck}")
+    else:
+        print(
+            f"WARNING: spot-check file not found ({args.spotcheck}); "
+            "auditor-derived placeholders will not be filled."
+        )
 
     print("Replacements:")
     for k, v in replacements.items():
