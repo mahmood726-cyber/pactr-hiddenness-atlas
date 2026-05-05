@@ -1,0 +1,16 @@
+# tiba.yaml — Tiba federation manifest for the Discovery layer.
+# Schema: https://github.com/mahmood726-cyber/tiba/blob/main/schema/tiba.yaml.schema.json
+schema_version: 1
+layer: discovery
+status: operational
+owning_repo: mahmood726-cyber/pactr-hiddenness-atlas
+pages_url: https://mahmood726-cyber.github.io/pactr-hiddenness-atlas/
+headline_metric:
+  label: "NCT-bridge sensitivity for PACTR-published African pubs"
+  value: "6.2%"
+  ci_or_qualifier: "1/30 algorithm vs 16/30 blinded auditor; n=30"
+  source: "pactr-hiddenness-atlas v0.1.0 (2026-05-05)"
+contact:
+  steward: mahmood726-cyber
+  cohort: null
+last_verified: "2026-05-05"
