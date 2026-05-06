@@ -6,11 +6,11 @@ status: operational
 owning_repo: mahmood726-cyber/pactr-hiddenness-atlas
 pages_url: https://mahmood726-cyber.github.io/pactr-hiddenness-atlas/
 headline_metric:
-  label: "NCT-bridge sensitivity for PACTR-published African pubs"
-  value: "6.2%"
-  ci_or_qualifier: "1/30 algorithm vs 16/30 blinded auditor; n=30"
-  source: "pactr-hiddenness-atlas v0.1.0 (2026-05-05)"
+  label: "PACTR-ID-direct vs NCT-bridge: two discovery methods for African trial pubs"
+  value: "75.0% (12/16)"
+  ci_or_qualifier: "PACTR-ID-direct sensitivity 75.0% [50.5,89.8]%; NCT-bridge 6.2% (1/16); auditor 53.3% (16/30); 12x improvement; OTS prereg-v0.2.0"
+  source: "pactr-hiddenness-atlas v0.2.0 (2026-05-06)"
 contact:
   steward: mahmood726-cyber
   cohort: null
-last_verified: "2026-05-05"
+last_verified: "2026-05-06"

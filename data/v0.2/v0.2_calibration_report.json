@@ -1,0 +1,226 @@
+{
+  "spec_version": "v0.2",
+  "generated_at": "2026-05-06T20:28:23.367747+00:00",
+  "gold_standard": {
+    "auditor_positives": 16,
+    "auditor_negatives": 14,
+    "n_total": 30
+  },
+  "nct_bridge_baseline": {
+    "tp": 1,
+    "fn": 15,
+    "n_auditor_positives": 16,
+    "sensitivity": 0.0625,
+    "sensitivity_pct": 6.2,
+    "note": "pre-registered v0.1.0 headline: 6.2% (1/16 auditor-positive trials)"
+  },
+  "pactr_id_direct": {
+    "tp": 12,
+    "fp": 2,
+    "fn": 4,
+    "tn": 12,
+    "n_total": 30,
+    "sensitivity": 0.75,
+    "sensitivity_pct": 75.0,
+    "sensitivity_wilson_lo": 0.505,
+    "sensitivity_wilson_hi": 0.8982,
+    "specificity": 0.8571,
+    "specificity_pct": 85.7,
+    "specificity_wilson_lo": 0.6006,
+    "specificity_wilson_hi": 0.9599,
+    "cohen_kappa": 0.6018,
+    "improvement_vs_nct_x": 12.0
+  },
+  "comparison_table": {
+    "nct_bridge_hits_30": 1,
+    "pactr_id_direct_hits_30": 14,
+    "auditor_hits_30": 16,
+    "nct_bridge_sensitivity_pct": 6.2,
+    "nct_bridge_sensitivity_note": "6.2% = TP/auditor_positives = 1/16",
+    "pactr_id_direct_sensitivity_pct": 75.0,
+    "auditor_sensitivity_pct": 53.3
+  },
+  "trial_details": [
+    {
+      "trial_id": "PACTR201510001314191",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR202306638003501",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR201105000289276",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR202203698019870",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR201802003141213",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR202206574814636",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR202205640398485",
+      "auditor_positive": false,
+      "algorithm_hit": true,
+      "cell": "FP"
+    },
+    {
+      "trial_id": "PACTR202105682809727",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR202208586601902",
+      "auditor_positive": true,
+      "algorithm_hit": false,
+      "cell": "FN"
+    },
+    {
+      "trial_id": "PACTR201007000192283",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR201304000533711",
+      "auditor_positive": true,
+      "algorithm_hit": false,
+      "cell": "FN"
+    },
+    {
+      "trial_id": "PACTR202411885208906",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR201803003147805",
+      "auditor_positive": true,
+      "algorithm_hit": false,
+      "cell": "FN"
+    },
+    {
+      "trial_id": "PACTR202203635007430",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR201809873079121",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR201307000583416",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR202412535326702",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR201810756862405",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR201811755733759",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR201501000965252",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR202302476608339",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR202311478928378",
+      "auditor_positive": false,
+      "algorithm_hit": true,
+      "cell": "FP"
+    },
+    {
+      "trial_id": "PACTR202006697506244",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR202507731782580",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR201802003063273",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR201804003327269",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR2010030001971409",
+      "auditor_positive": true,
+      "algorithm_hit": true,
+      "cell": "TP"
+    },
+    {
+      "trial_id": "PACTR202209524746573",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR202307901658960",
+      "auditor_positive": false,
+      "algorithm_hit": false,
+      "cell": "TN"
+    },
+    {
+      "trial_id": "PACTR202309795602903",
+      "auditor_positive": true,
+      "algorithm_hit": false,
+      "cell": "FN"
+    }
+  ],
+  "r3_caveat": "FPs may include systematic reviews citing multiple PACTR IDs. Sensitivity estimate is an upper bound; specificity measures over-inclusion. v0.3 will add primary-publication filter."
+}
