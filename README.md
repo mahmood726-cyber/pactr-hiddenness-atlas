@@ -2,7 +2,7 @@
 
 A 10-condition Africa-burden audit of the WHO ICTRP weekly export, computing a four-gate hiddenness funnel (PACTR registered → results posted → published → cited in any Cochrane MA) per condition.
 
-**Status:** preregistration only — *zero implementation*. Tag `prereg-v0.0.1` anchors the protocol on GitHub before any code is written.
+**Status:** implemented through v0.2.0 (four-gate funnel, NCT-bridge + PACTR-ID-literal Cochrane match, clustered-bootstrap CI, dashboard). Tag `prereg-v0.0.1` anchors the original protocol, frozen before any code was written.
 
 ## Headline question
 

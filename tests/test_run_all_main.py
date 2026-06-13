@@ -44,8 +44,8 @@ def test_run_all_main_block_exits_cleanly(tmp_path):
         """),
         encoding="utf-8",
     )
-    env_patch = {"PYTHONPATH": str(ROOT / "src") + ":" + str(ROOT)}
     import os
+    env_patch = {"PYTHONPATH": os.pathsep.join([str(ROOT / "src"), str(ROOT)])}
     env = {**os.environ, **env_patch}
 
     result = subprocess.run(
